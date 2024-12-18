@@ -1,6 +1,6 @@
 package net.botwithus.rs3.cache.assets;
 
-public interface ConfigProvider<T extends ConfigType> {
+public interface ConfigProvider<T extends Definition> {
     String name();
 
     T provide(int id);

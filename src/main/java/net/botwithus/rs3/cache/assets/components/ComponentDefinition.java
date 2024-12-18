@@ -1,8 +1,8 @@
 package net.botwithus.rs3.cache.assets.components;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
+import net.botwithus.rs3.cache.assets.Definition;
 
-public class ComponentType implements ConfigType {
+public class ComponentDefinition implements Definition {
 
     int[] cursors;
     String[] options;
@@ -144,7 +144,7 @@ public class ComponentType implements ConfigType {
     int anInt2996;
     int[] anIntArray2997;
     int anInt2998;
-    ComponentType aClass289_2999;
+    ComponentDefinition aClass289_2999;
     Object[] anObjectArray3000;
     String aString3003;
     boolean aBool3004;
@@ -201,8 +201,8 @@ public class ComponentType implements ConfigType {
     int anInt3060;
     Object[] anObjectArray3061;
     Object[] anObjectArray3062;
-    ComponentType[] aClass289Array3063;
-    ComponentType[] aClass289Array3064;
+    ComponentDefinition[] aClass289Array3063;
+    ComponentDefinition[] aClass289Array3064;
     boolean aBool3065;
     boolean aBool3066;
     Object[] anObjectArray3067;
@@ -223,7 +223,7 @@ public class ComponentType implements ConfigType {
     int anInt3057;
     int anInt3058;
 
-    ComponentType() {
+    ComponentDefinition() {
         contentType = 0;
         aspectXType = (byte) 0;
         aspectYType = (byte) 0;

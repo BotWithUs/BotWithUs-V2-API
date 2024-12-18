@@ -3,19 +3,17 @@ package net.botwithus.rs3.cache.assets.npcs;
 import net.botwithus.rs3.cache.assets.ConfigLoader;
 import net.botwithus.rs3.cache.utils.ByteBufferUtils;
 
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-public class NpcLoader implements ConfigLoader<NpcType> {
+public class NpcLoader implements ConfigLoader<NpcDefinition> {
 
     private static final Logger log = Logger.getLogger(NpcLoader.class.getName());
 
     @Override
-    public void load(NpcType type, ByteBuffer stream) {
+    public void load(NpcDefinition type, ByteBuffer stream) {
         while (stream.hasRemaining()) {
             int opcode = ByteBufferUtils.g1(stream);
             if (opcode == 0) {

@@ -1,17 +1,17 @@
 package net.botwithus.rs3.cache.assets.maps;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
+import net.botwithus.rs3.cache.assets.Definition;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegionType implements ConfigType {
+public class RegionDefinition implements Definition {
 
     final int regionId;
-    final List<LocSpawnType> spawns;
+    final List<SceneObjectSpawnDefinition> spawns;
     final byte[][][] flags;
 
-    public RegionType(int regionId) {
+    public RegionDefinition(int regionId) {
         this.regionId = regionId;
         this.spawns = new ArrayList<>();
         this.flags = new byte[4][64][64];

@@ -1,8 +1,8 @@
 package net.botwithus.rs3.cache.assets.cs2;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
+import net.botwithus.rs3.cache.assets.Definition;
 
-public class ScriptType implements ConfigType {
+public class ScriptType implements Definition {
 
     final int scriptId;
     String name;

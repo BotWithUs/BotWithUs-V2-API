@@ -1,8 +1,7 @@
 package net.botwithus.rs3.interfaces;
 
 import net.botwithus.rs3.cache.assets.ConfigManager;
-import net.botwithus.rs3.cache.assets.ConfigProvider;
-import net.botwithus.rs3.cache.assets.params.ParamType;
+import net.botwithus.rs3.cache.assets.params.ParamDefinition;
 import net.botwithus.rs3.interfaces.internal.MutableComponent;
 
 import java.util.*;
@@ -133,7 +132,7 @@ public sealed abstract class Component permits MutableComponent {
     }
 
     public int getParam(int id) {
-        ParamType type = ConfigManager.getParamProvider().provide(id);
+        ParamDefinition type = ConfigManager.getParamProvider().provide(id);
         if (type == null) {
             return -1;
         }

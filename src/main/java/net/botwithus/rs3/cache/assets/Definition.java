@@ -1,6 +1,6 @@
 package net.botwithus.rs3.cache.assets;
 
-public interface ConfigType {
+public interface Definition {
 
     int getId();
 

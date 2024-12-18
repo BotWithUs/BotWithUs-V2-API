@@ -1,7 +1,7 @@
 package net.botwithus.rs3.entities;
 
 import net.botwithus.rs3.cache.assets.ConfigManager;
-import net.botwithus.rs3.cache.assets.locs.LocType;
+import net.botwithus.rs3.cache.assets.so.SceneObjectDefinition;
 import net.botwithus.rs3.entities.internal.MutableSceneObject;
 import net.botwithus.rs3.minimenu.Action;
 import net.botwithus.rs3.minimenu.Interactive;
@@ -11,7 +11,6 @@ import net.botwithus.rs3.vars.VarDomain;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -39,8 +38,8 @@ public sealed abstract class SceneObject extends Entity implements Interactive p
         return hidden;
     }
 
-    public LocType getMultiType() {
-        LocType type = ConfigManager.getLocProvider().provide(this.typeId);
+    public SceneObjectDefinition getMultiType() {
+        SceneObjectDefinition type = ConfigManager.getSceneObjectLoader().provide(this.typeId);
         if (type == null) {
             return null;
         }
@@ -58,29 +57,30 @@ public sealed abstract class SceneObject extends Entity implements Interactive p
         if(value < 0 || value >= immitations.length - 1) {
             value = immitations.length - 1;
             if(value != -1) {
-                return ConfigManager.getLocProvider().provide(immitations[value]);
+                return ConfigManager.getSceneObjectLoader().provide(immitations[value]);
             }
             return type;
         }
         if(immitations[value] == -1) {
             return type;
         }
-        return ConfigManager.getLocProvider().provide(immitations[value]);
+        return ConfigManager.getSceneObjectLoader().provide(immitations[value]);
     }
 
     public String getName() {
-        LocType type = getMultiType();
+        SceneObjectDefinition type = getMultiType();
         if (type == null) {
             return "";
         }
-        if (type.getName() == null) {
+        String name = type.getName();
+        if (name == null) {
             return "";
         }
-        return type.getName();
+        return name;
     }
 
     public List<String> getOptions() {
-        LocType type = getMultiType();
+        SceneObjectDefinition type = getMultiType();
         if (type == null) {
             return Collections.emptyList();
         }

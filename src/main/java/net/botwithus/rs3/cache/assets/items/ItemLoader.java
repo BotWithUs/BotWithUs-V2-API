@@ -10,12 +10,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ItemLoader implements ConfigLoader<ItemType> {
+public class ItemLoader implements ConfigLoader<ItemDefinition> {
 
     private static final Logger log = Logger.getLogger(ItemLoader.class.getName());
 
     @Override
-    public void load(ItemType type, ByteBuffer buffer) {
+    public void load(ItemDefinition type, ByteBuffer buffer) {
         try {
             while (buffer.hasRemaining()) {
                 int opcode = Byte.toUnsignedInt(buffer.get());

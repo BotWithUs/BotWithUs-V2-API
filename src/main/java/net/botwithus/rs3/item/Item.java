@@ -1,7 +1,7 @@
 package net.botwithus.rs3.item;
 
 import net.botwithus.rs3.cache.assets.ConfigManager;
-import net.botwithus.rs3.cache.assets.items.ItemType;
+import net.botwithus.rs3.cache.assets.items.ItemDefinition;
 import net.botwithus.rs3.cache.assets.items.StackType;
 import net.botwithus.rs3.item.internal.MutableItem;
 
@@ -27,7 +27,7 @@ public sealed abstract class Item permits InventoryItem, MutableItem {
         return quantity;
     }
 
-    public ItemType getType() {
+    public ItemDefinition getType() {
         return ConfigManager.getItemProvider().provide(id);
     }
 
@@ -35,7 +35,7 @@ public sealed abstract class Item permits InventoryItem, MutableItem {
         if(id == -1) {
             return -1;
         }
-        ItemType type = getType();
+        ItemDefinition type = getType();
         if(type == null) {
             return -1;
         }
@@ -46,7 +46,7 @@ public sealed abstract class Item permits InventoryItem, MutableItem {
         if(id == -1) {
             return "";
         }
-        ItemType type = getType();
+        ItemDefinition type = getType();
         if(type == null) {
             return "";
         }
@@ -57,7 +57,7 @@ public sealed abstract class Item permits InventoryItem, MutableItem {
         if(id == -1) {
             return StackType.NEVER;
         }
-        ItemType type = getType();
+        ItemDefinition type = getType();
         if(type == null) {
             return StackType.NEVER;
         }

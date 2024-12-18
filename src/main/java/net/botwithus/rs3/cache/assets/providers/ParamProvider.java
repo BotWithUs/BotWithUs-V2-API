@@ -6,7 +6,7 @@ import net.botwithus.rs3.cache.Filesystem;
 import net.botwithus.rs3.cache.ReferenceTable;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.params.ParamLoader;
-import net.botwithus.rs3.cache.assets.params.ParamType;
+import net.botwithus.rs3.cache.assets.params.ParamDefinition;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -14,14 +14,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class ParamProvider implements ConfigProvider<ParamType> {
+public final class ParamProvider implements ConfigProvider<ParamDefinition> {
 
     private static final Logger log = Logger.getLogger(ItemProvider.class.getName());
     private final Filesystem fs;
 
     private final ParamLoader loader;
 
-    private final Map<Integer, ParamType> params;
+    private final Map<Integer, ParamDefinition> params;
 
     public ParamProvider(Filesystem fs) {
         this.fs = fs;
@@ -35,7 +35,7 @@ public final class ParamProvider implements ConfigProvider<ParamType> {
     }
 
     @Override
-    public ParamType provide(int id) {
+    public ParamDefinition provide(int id) {
         if (params.containsKey(id)) {
             return params.get(id);
         }
@@ -52,7 +52,7 @@ public final class ParamProvider implements ConfigProvider<ParamType> {
             if (file == null) {
                 return null;
             }
-            ParamType param = new ParamType(id);
+            ParamDefinition param = new ParamDefinition(id);
             loader.load(param, ByteBuffer.wrap(file.getData()));
             params.put(id, param);
             return param;

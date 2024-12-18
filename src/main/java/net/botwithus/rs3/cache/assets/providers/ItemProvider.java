@@ -6,7 +6,7 @@ import net.botwithus.rs3.cache.Filesystem;
 import net.botwithus.rs3.cache.ReferenceTable;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.items.ItemLoader;
-import net.botwithus.rs3.cache.assets.items.ItemType;
+import net.botwithus.rs3.cache.assets.items.ItemDefinition;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -14,13 +14,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class ItemProvider implements ConfigProvider<ItemType> {
+public final class ItemProvider implements ConfigProvider<ItemDefinition> {
     private static final Logger log = Logger.getLogger(ItemProvider.class.getName());
 
     private final ItemLoader loader;
     private final Filesystem fs;
 
-    private final Map<Integer, ItemType> items;
+    private final Map<Integer, ItemDefinition> items;
 
     private final ParamProvider paramProvider;
 
@@ -37,7 +37,7 @@ public final class ItemProvider implements ConfigProvider<ItemType> {
     }
 
     @Override
-    public ItemType provide(int id) {
+    public ItemDefinition provide(int id) {
         if (items.containsKey(id)) {
             return items.get(id);
         }
@@ -56,7 +56,7 @@ public final class ItemProvider implements ConfigProvider<ItemType> {
             if (file == null) {
                 return null;
             }
-            ItemType item = new ItemType(id);
+            ItemDefinition item = new ItemDefinition(id);
             loader.load(item, ByteBuffer.wrap(file.getData()));
 
             if(item.getNotedTemplate() != -1) {

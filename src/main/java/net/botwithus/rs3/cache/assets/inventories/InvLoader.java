@@ -4,9 +4,9 @@ import net.botwithus.rs3.cache.assets.ConfigLoader;
 
 import java.nio.ByteBuffer;
 
-public class InvLoader implements ConfigLoader<InvType> {
+public class InvLoader implements ConfigLoader<InventoryDefinition> {
     @Override
-    public void load(InvType type, ByteBuffer buffer) {
+    public void load(InventoryDefinition type, ByteBuffer buffer) {
         while (buffer.hasRemaining()) {
             int opcode = Byte.toUnsignedInt(buffer.get());
             if (opcode == 0) {

@@ -5,8 +5,8 @@ import net.botwithus.rs3.cache.ArchiveFile;
 import net.botwithus.rs3.cache.Filesystem;
 import net.botwithus.rs3.cache.ReferenceTable;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
-import net.botwithus.rs3.cache.assets.locs.LocLoader;
-import net.botwithus.rs3.cache.assets.locs.LocType;
+import net.botwithus.rs3.cache.assets.so.SceneObjectLoader;
+import net.botwithus.rs3.cache.assets.so.SceneObjectDefinition;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -14,18 +14,18 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class LocProvider implements ConfigProvider<LocType> {
+public final class SceneObjectProvider implements ConfigProvider<SceneObjectDefinition> {
 
-    private static final Logger log = Logger.getLogger(LocProvider.class.getName());
+    private static final Logger log = Logger.getLogger(SceneObjectProvider.class.getName());
 
     private final Filesystem fs;
-    private final LocLoader loader;
+    private final SceneObjectLoader loader;
 
-    private final Map<Integer, LocType> cache;
+    private final Map<Integer, SceneObjectDefinition> cache;
 
-    public LocProvider(Filesystem fs) {
+    public SceneObjectProvider(Filesystem fs) {
         this.fs = fs;
-        this.loader = new LocLoader();
+        this.loader = new SceneObjectLoader();
         this.cache = new HashMap<>();
     }
 
@@ -35,7 +35,7 @@ public final class LocProvider implements ConfigProvider<LocType> {
     }
 
     @Override
-    public LocType provide(int id) {
+    public SceneObjectDefinition provide(int id) {
         try {
             ReferenceTable table = fs.getReferenceTable(16, false);
             if (table == null) {
@@ -51,7 +51,7 @@ public final class LocProvider implements ConfigProvider<LocType> {
             if (file == null) {
                 return null;
             }
-            LocType type = new LocType(id);
+            SceneObjectDefinition type = new SceneObjectDefinition(id);
             loader.load(type, ByteBuffer.wrap(file.getData()));
             cache.put(id, type);
             return type;

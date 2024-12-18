@@ -6,7 +6,7 @@ import net.botwithus.rs3.cache.Filesystem;
 import net.botwithus.rs3.cache.ReferenceTable;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.npcs.NpcLoader;
-import net.botwithus.rs3.cache.assets.npcs.NpcType;
+import net.botwithus.rs3.cache.assets.npcs.NpcDefinition;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -14,11 +14,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class NpcProvider implements ConfigProvider<NpcType> {
+public final class NpcProvider implements ConfigProvider<NpcDefinition> {
 
     private static final Logger log = Logger.getLogger(NpcProvider.class.getName());
 
-    private final Map<Integer, NpcType> npcs;
+    private final Map<Integer, NpcDefinition> npcs;
     private final Filesystem fs;
 
     private final NpcLoader loader;
@@ -35,7 +35,7 @@ public final class NpcProvider implements ConfigProvider<NpcType> {
     }
 
     @Override
-    public NpcType provide(int id) {
+    public NpcDefinition provide(int id) {
         if (npcs.containsKey(id)) {
             return npcs.get(id);
         }
@@ -54,7 +54,7 @@ public final class NpcProvider implements ConfigProvider<NpcType> {
             if (file == null) {
                 return null;
             }
-            NpcType npc = new NpcType(id);
+            NpcDefinition npc = new NpcDefinition(id);
             loader.load(npc, ByteBuffer.wrap(file.getData()));
             npcs.put(id, npc);
             return npc;

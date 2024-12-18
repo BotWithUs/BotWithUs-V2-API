@@ -7,9 +7,9 @@ import net.botwithus.rs3.cache.utils.JStringTools;
 
 import java.nio.ByteBuffer;
 
-public class ParamLoader implements ConfigLoader<ParamType> {
+public class ParamLoader implements ConfigLoader<ParamDefinition> {
     @Override
-    public void load(ParamType type, ByteBuffer buffer) {
+    public void load(ParamDefinition type, ByteBuffer buffer) {
         while (buffer.hasRemaining()) {
             int opcode = Byte.toUnsignedInt(buffer.get());
             if (opcode == 0) {

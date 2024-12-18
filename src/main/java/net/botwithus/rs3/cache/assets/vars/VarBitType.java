@@ -1,8 +1,8 @@
 package net.botwithus.rs3.cache.assets.vars;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
+import net.botwithus.rs3.cache.assets.Definition;
 
-public class VarBitType implements ConfigType {
+public class VarBitType implements Definition {
 
     int id;
     VarDomainType domainType;

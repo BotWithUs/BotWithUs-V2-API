@@ -1,4 +1,4 @@
-package net.botwithus.rs3.cache.assets.locs;
+package net.botwithus.rs3.cache.assets.so;
 
 import net.botwithus.rs3.cache.assets.ConfigLoader;
 import net.botwithus.rs3.cache.utils.ByteBufferUtils;
@@ -8,9 +8,9 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
-public final class LocLoader implements ConfigLoader<LocType> {
+public final class SceneObjectLoader implements ConfigLoader<SceneObjectDefinition> {
     @Override
-    public void load(LocType type, ByteBuffer buffer) {
+    public void load(SceneObjectDefinition type, ByteBuffer buffer) {
         while (buffer.hasRemaining()) {
             int opcode = Byte.toUnsignedInt(buffer.get());
             if (opcode == 0) {

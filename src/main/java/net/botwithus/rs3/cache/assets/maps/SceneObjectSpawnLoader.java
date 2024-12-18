@@ -5,9 +5,9 @@ import net.botwithus.rs3.cache.utils.ByteBufferUtils;
 
 import java.nio.ByteBuffer;
 
-public final class LocSpawnLoader implements ConfigLoader<RegionType> {
+public final class SceneObjectSpawnLoader implements ConfigLoader<RegionDefinition> {
     @Override
-    public void load(RegionType type, ByteBuffer buffer) {
+    public void load(RegionDefinition type, ByteBuffer buffer) {
         int bx = (type.regionId >> 8) & 0xFF;
         int by = type.regionId & 0xFF;
         int objectId = -1;
@@ -29,7 +29,7 @@ public final class LocSpawnLoader implements ConfigLoader<RegionType> {
                 }
                 int x = bx * 64 + localX;
                 int y = by * 64 + localY;
-                type.spawns.add(new LocSpawnType(objectId, x, y, plane, shape, rotation));
+                type.spawns.add(new SceneObjectSpawnDefinition(objectId, x, y, plane, shape, rotation));
             }
         }
     }

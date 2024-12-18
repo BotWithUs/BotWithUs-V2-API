@@ -6,8 +6,8 @@ import net.botwithus.rs3.cache.Filesystem;
 import net.botwithus.rs3.cache.ReferenceTable;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.maps.TileLoader;
-import net.botwithus.rs3.cache.assets.maps.LocSpawnLoader;
-import net.botwithus.rs3.cache.assets.maps.RegionType;
+import net.botwithus.rs3.cache.assets.maps.SceneObjectSpawnLoader;
+import net.botwithus.rs3.cache.assets.maps.RegionDefinition;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class MapProvider implements ConfigProvider<RegionType> {
+public final class MapProvider implements ConfigProvider<RegionDefinition> {
 
     private static final Logger log = Logger.getLogger(MapProvider.class.getName());
 
@@ -23,15 +23,15 @@ public final class MapProvider implements ConfigProvider<RegionType> {
     private static final int TILES_FILE = 3;
 
     private final Filesystem fs;
-    private final Map<Integer, RegionType> cache;
+    private final Map<Integer, RegionDefinition> cache;
 
-    private final LocSpawnLoader spawnLoader;
+    private final SceneObjectSpawnLoader spawnLoader;
     private final TileLoader tileLoader;;
 
     public MapProvider(Filesystem fs) {
         this.fs = fs;
         this.cache = new HashMap<>();
-        this.spawnLoader = new LocSpawnLoader();
+        this.spawnLoader = new SceneObjectSpawnLoader();
         this.tileLoader = new TileLoader();
     }
 
@@ -41,7 +41,7 @@ public final class MapProvider implements ConfigProvider<RegionType> {
     }
 
     @Override
-    public RegionType provide(int id) {
+    public RegionDefinition provide(int id) {
         if(cache.containsKey(id)) {
             return cache.get(id);
         }
@@ -55,7 +55,7 @@ public final class MapProvider implements ConfigProvider<RegionType> {
             Archive archive = table.loadArchive(regionX | (regionY << 7));
             ArchiveFile locFile = archive.files.get(LOC_FILE);
             ArchiveFile tilesFile = archive.files.get(TILES_FILE);
-            RegionType type = new RegionType(id);
+            RegionDefinition type = new RegionDefinition(id);
             if (locFile != null) {
                 spawnLoader.load(type, ByteBuffer.wrap(locFile.getData()));
             }

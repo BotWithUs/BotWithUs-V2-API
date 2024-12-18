@@ -1,10 +1,10 @@
-package net.botwithus.rs3.cache.assets.locs;
+package net.botwithus.rs3.cache.assets.so;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
+import net.botwithus.rs3.cache.assets.Definition;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public final class LocType implements ConfigType {
+public final class SceneObjectDefinition implements Definition {
     int id;
     int[][] modelIds;
     int[] types;
@@ -62,7 +62,7 @@ public final class LocType implements ConfigType {
     int[] unknownFields;
     ConcurrentHashMap<Integer, Object> params;
 
-    public LocType(int id) {
+    public SceneObjectDefinition(int id) {
         this.id = id;
     }
 

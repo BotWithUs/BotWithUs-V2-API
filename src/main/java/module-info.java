@@ -21,7 +21,7 @@ module BotWithUs.api {
     exports net.botwithus.rs3.cache.assets.npcs;
     exports net.botwithus.rs3.cache.assets.params;
     exports net.botwithus.rs3.cache.assets.vars;
-    exports net.botwithus.rs3.cache.assets.locs;
+    exports net.botwithus.rs3.cache.assets.so;
     exports net.botwithus.rs3.cache.assets.inventories;
     exports net.botwithus.rs3.cache.assets.providers;
     exports net.botwithus.rs3.inventories;

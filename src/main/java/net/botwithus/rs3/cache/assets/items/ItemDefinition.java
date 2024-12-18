@@ -1,15 +1,13 @@
 package net.botwithus.rs3.cache.assets.items;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
-import net.botwithus.rs3.cache.assets.params.ParamType;
+import net.botwithus.rs3.cache.assets.Definition;
 
-import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class ItemType implements ConfigType {
+public class ItemDefinition implements Definition {
     int modelId = 0;
     String name = "";
     int modelZoom = 2000;
@@ -83,11 +81,11 @@ public class ItemType implements ConfigType {
     int id;
     Map<Integer, Object> params;
 
-    public ItemType(int id) {
+    public ItemDefinition(int id) {
         this.id = id;
     }
 
-    public void toNote(ItemType note) {
+    public void toNote(ItemDefinition note) {
         if (note != null) {
             this.members = note.members;
             this.price = note.price;

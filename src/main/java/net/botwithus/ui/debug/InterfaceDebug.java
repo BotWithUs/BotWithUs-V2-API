@@ -3,7 +3,7 @@ package net.botwithus.ui.debug;
 import net.botwithus.imgui.ImFlags;
 import net.botwithus.imgui.ImGui;
 import net.botwithus.rs3.cache.assets.ConfigManager;
-import net.botwithus.rs3.cache.assets.params.ParamType;
+import net.botwithus.rs3.cache.assets.params.ParamDefinition;
 import net.botwithus.rs3.interfaces.Component;
 import net.botwithus.rs3.interfaces.ComponentType;
 import net.botwithus.rs3.interfaces.Interface;
@@ -125,7 +125,7 @@ public final class InterfaceDebug implements WorkspaceExtension {
                     ImGui.tableSetupColumn("Value", 0, 0, 0);
                     ImGui.tableHeadersRow();
                     for (int param : selected.getParams().keySet()) {
-                        ParamType type = ConfigManager.getParamProvider().provide(param);
+                        ParamDefinition type = ConfigManager.getParamProvider().provide(param);
                         if (type == null) {
                             continue;
                         }

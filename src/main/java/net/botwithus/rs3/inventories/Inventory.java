@@ -1,7 +1,7 @@
 package net.botwithus.rs3.inventories;
 
 import net.botwithus.rs3.cache.assets.ConfigManager;
-import net.botwithus.rs3.cache.assets.inventories.InvType;
+import net.botwithus.rs3.cache.assets.inventories.InventoryDefinition;
 import net.botwithus.rs3.cache.assets.vars.VarBitType;
 import net.botwithus.rs3.cache.assets.vars.VarDomainType;
 import net.botwithus.rs3.inventories.internal.MutableInventory;
@@ -16,7 +16,7 @@ import java.util.stream.StreamSupport;
 public sealed class Inventory implements Iterable<InventoryItem> permits MutableInventory {
 
     protected final int id;
-    protected final InvType type;
+    protected final InventoryDefinition type;
     protected MutableInventoryItem[] items;
     protected boolean isActive = false;
     protected Map<Integer, Integer>[] domains;
@@ -39,7 +39,7 @@ public sealed class Inventory implements Iterable<InventoryItem> permits Mutable
         return id;
     }
 
-    public InvType getType() {
+    public InventoryDefinition getType() {
         return type;
     }
 

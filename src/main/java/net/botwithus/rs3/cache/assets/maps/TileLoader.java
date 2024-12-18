@@ -5,9 +5,9 @@ import net.botwithus.rs3.cache.utils.ByteBufferUtils;
 
 import java.nio.ByteBuffer;
 
-public final class TileLoader implements ConfigLoader<RegionType> {
+public final class TileLoader implements ConfigLoader<RegionDefinition> {
     @Override
-    public void load(RegionType type, ByteBuffer buffer) {
+    public void load(RegionDefinition type, ByteBuffer buffer) {
         buffer.position(buffer.position() + 5);
         for (int plane = 0; plane < 4; plane++) {
             for (int x = 0; x < 64; x++) {

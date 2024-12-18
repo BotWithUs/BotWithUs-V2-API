@@ -1,16 +1,11 @@
 package net.botwithus.rs3.cache;
 
-import net.botwithus.modules.vars.VarMonitorModule;
-import net.botwithus.rs3.cache.assets.items.ItemType;
-import net.botwithus.rs3.cache.assets.npcs.NpcType;
 import net.botwithus.rs3.cache.assets.providers.*;
-import net.botwithus.rs3.cache.assets.vars.VarBitType;
 import net.botwithus.rs3.cache.assets.vars.VarType;
 import net.botwithus.rs3.cache.sqlite.SqliteFilesystem;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
-import java.util.Objects;
 
 public class CacheReadTest {
 

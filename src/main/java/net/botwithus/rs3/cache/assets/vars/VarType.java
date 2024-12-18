@@ -1,9 +1,9 @@
 package net.botwithus.rs3.cache.assets.vars;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
+import net.botwithus.rs3.cache.assets.Definition;
 import net.botwithus.rs3.cache.assets.cs2.ScriptVarType;
 
-public class VarType implements ConfigType {
+public class VarType implements Definition {
 
     int domainType;
     int varId;

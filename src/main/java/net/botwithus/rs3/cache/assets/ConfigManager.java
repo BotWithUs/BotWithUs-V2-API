@@ -23,7 +23,7 @@ public final class ConfigManager {
 
     private static InvProvider invProvider;
 
-    private static LocProvider locProvider;
+    private static SceneObjectProvider sceneObjectProvider;
 
     private static ScriptProvider scriptProvider;
 
@@ -53,7 +53,7 @@ public final class ConfigManager {
         varBitProvider = new VarBitProvider(FS);
         npcProvider = new NpcProvider(FS);
         invProvider = new InvProvider(FS);
-        locProvider = new LocProvider(FS);
+        sceneObjectProvider = new SceneObjectProvider(FS);
         scriptProvider = new ScriptProvider(FS);
         varProvider = new VarProvider(FS);
         mapProvider = new MapProvider(FS);
@@ -80,8 +80,8 @@ public final class ConfigManager {
         return invProvider;
     }
 
-    public static LocProvider getLocProvider() {
-        return locProvider;
+    public static SceneObjectProvider getSceneObjectLoader() {
+        return sceneObjectProvider;
     }
 
     public static ScriptProvider getScriptProvider() {

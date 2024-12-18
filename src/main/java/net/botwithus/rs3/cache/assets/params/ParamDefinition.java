@@ -1,16 +1,16 @@
 package net.botwithus.rs3.cache.assets.params;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
+import net.botwithus.rs3.cache.assets.Definition;
 import net.botwithus.rs3.cache.assets.cs2.ScriptVarType;
 
-public class ParamType implements ConfigType {
+public class ParamDefinition implements Definition {
     private final int id;
     ScriptVarType type;
     int defaultint;
     String defaultstr;
     boolean autodisable = true;
 
-    public ParamType(int id) {
+    public ParamDefinition(int id) {
         this.id = id;
     }
 

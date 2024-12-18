@@ -6,7 +6,7 @@ import net.botwithus.rs3.cache.Filesystem;
 import net.botwithus.rs3.cache.ReferenceTable;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.inventories.InvLoader;
-import net.botwithus.rs3.cache.assets.inventories.InvType;
+import net.botwithus.rs3.cache.assets.inventories.InventoryDefinition;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -14,14 +14,14 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public final class InvProvider implements ConfigProvider<InvType> {
+public final class InvProvider implements ConfigProvider<InventoryDefinition> {
 
     private static final Logger log = Logger.getLogger(InvProvider.class.getName());
 
     private final Filesystem fs;
     private final InvLoader loader;
 
-    private final Map<Integer, InvType> cache;
+    private final Map<Integer, InventoryDefinition> cache;
 
     public InvProvider(Filesystem fs) {
         this.fs = fs;
@@ -35,7 +35,7 @@ public final class InvProvider implements ConfigProvider<InvType> {
     }
 
     @Override
-    public InvType provide(int id) {
+    public InventoryDefinition provide(int id) {
         if (cache.containsKey(id)) {
             return cache.get(id);
         }
@@ -52,7 +52,7 @@ public final class InvProvider implements ConfigProvider<InvType> {
             if (file == null) {
                 return null;
             }
-            InvType type = new InvType(id);
+            InventoryDefinition type = new InventoryDefinition(id);
             loader.load(type, ByteBuffer.wrap(file.getData()));
             cache.put(id, type);
             return type;

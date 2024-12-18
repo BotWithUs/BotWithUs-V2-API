@@ -1,10 +1,10 @@
 package net.botwithus.rs3.cache.assets.npcs;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
+import net.botwithus.rs3.cache.assets.Definition;
 
 import java.util.Map;
 
-public class NpcType implements ConfigType {
+public class NpcDefinition implements Definition {
     Map<Integer, Object> params;
     int[] modelIds;
     String name;
@@ -72,7 +72,7 @@ public class NpcType implements ConfigType {
     int[] actionCursors;
     int id;
 
-    public NpcType(int id) {
+    public NpcDefinition(int id) {
         this.id = id;
         this.modelIds = new int[0];
         this.name = "";

@@ -6,9 +6,9 @@ import net.botwithus.rs3.cache.utils.ByteBufferUtils;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-public final class ComponentLoader implements ConfigLoader<ComponentType> {
+public final class ComponentLoader implements ConfigLoader<ComponentDefinition> {
     @Override
-    public void load(ComponentType type, ByteBuffer buffer) {
+    public void load(ComponentDefinition type, ByteBuffer buffer) {
         int version = Byte.toUnsignedInt(buffer.get());
         if (version == 255) {
             version = -1;

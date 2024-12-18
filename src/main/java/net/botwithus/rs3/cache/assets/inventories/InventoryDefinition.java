@@ -1,15 +1,15 @@
 package net.botwithus.rs3.cache.assets.inventories;
 
-import net.botwithus.rs3.cache.assets.ConfigType;
+import net.botwithus.rs3.cache.assets.Definition;
 
-public class InvType implements ConfigType {
+public class InventoryDefinition implements Definition {
 
     int id;
     int capacity;
     int[] itemStock;
     int[] itemStockAmount;
 
-    public InvType(int id) {
+    public InventoryDefinition(int id) {
         this.id = id;
     }
 
