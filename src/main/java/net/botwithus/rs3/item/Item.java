@@ -7,7 +7,7 @@ import net.botwithus.rs3.item.internal.MutableItem;
 
 import java.util.logging.Logger;
 
-public sealed abstract class Item permits InvItem, MutableItem {
+public sealed abstract class Item permits InventoryItem, MutableItem {
 
     private static final Logger log = Logger.getLogger(Item.class.getName());
 
@@ -35,20 +35,32 @@ public sealed abstract class Item permits InvItem, MutableItem {
         if(id == -1) {
             return -1;
         }
-        return getType().getCategory();
+        ItemType type = getType();
+        if(type == null) {
+            return -1;
+        }
+        return type.getCategory();
     }
 
     public String getName() {
         if(id == -1) {
             return "";
         }
-        return getType().getName();
+        ItemType type = getType();
+        if(type == null) {
+            return "";
+        }
+        return type.getName();
     }
 
     public StackType getStackType() {
         if(id == -1) {
             return StackType.NEVER;
         }
-        return getType().getStackability();
+        ItemType type = getType();
+        if(type == null) {
+            return StackType.NEVER;
+        }
+        return type.getStackability();
     }
 }

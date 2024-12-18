@@ -1,10 +1,10 @@
 package net.botwithus.rs3.item.internal;
 
 import net.botwithus.rs3.inventories.Inventory;
-import net.botwithus.rs3.item.InvItem;
+import net.botwithus.rs3.item.InventoryItem;
 
-public final class MutableInvItem extends InvItem {
-    public MutableInvItem(int id, int amount, int slot, Inventory inventory) {
+public final class MutableInventoryItem extends InventoryItem {
+    public MutableInventoryItem(int id, int amount, int slot, Inventory inventory) {
         super(id, amount, slot, inventory);
     }
 

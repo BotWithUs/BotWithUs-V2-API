@@ -1,9 +1,8 @@
 package net.botwithus.rs3.inventories.internal;
 
 import net.botwithus.rs3.inventories.Inventory;
-import net.botwithus.rs3.item.internal.MutableInvItem;
+import net.botwithus.rs3.item.internal.MutableInventoryItem;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -15,7 +14,7 @@ public final class MutableInventory extends Inventory {
         super(id);
     }
 
-    public void setItem(int slot, MutableInvItem invItem) {
+    public void setItem(int slot, MutableInventoryItem invItem) {
         int capacity = items.length;
         if (slot < 0 || slot >= capacity) {
             return;
@@ -24,7 +23,7 @@ public final class MutableInventory extends Inventory {
     }
 
     @Override
-    public MutableInvItem getItem(int slot) {
+    public MutableInventoryItem getItem(int slot) {
         int capacity = items.length;
         if (slot < 0 || slot >= capacity) {
             return null;
@@ -38,7 +37,7 @@ public final class MutableInventory extends Inventory {
 
     public void clear() {
         for (int i = 0; i < this.type.getCapacity(); i++) {
-            MutableInvItem item = this.items[i];
+            MutableInventoryItem item = this.items[i];
             if (item != null) {
                 item.setId(-1);
                 item.setAmount(0);
@@ -50,7 +49,7 @@ public final class MutableInventory extends Inventory {
         if (slot < 0 || slot >= this.type.getCapacity()) {
             return;
         }
-        MutableInvItem item = items[slot];
+        MutableInventoryItem item = items[slot];
         if (item != null && item.getId() != -1) {
             if (this.domains[slot] == null) {
                 this.domains[slot] = new HashMap<>();

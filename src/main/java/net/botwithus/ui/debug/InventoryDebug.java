@@ -5,10 +5,9 @@ import net.botwithus.imgui.ImGui;
 import net.botwithus.rs3.cache.assets.ConfigManager;
 import net.botwithus.rs3.cache.assets.vars.VarBitType;
 import net.botwithus.rs3.cache.assets.vars.VarDomainType;
-import net.botwithus.rs3.cache.assets.vars.VarType;
 import net.botwithus.rs3.inventories.Inventory;
 import net.botwithus.rs3.inventories.InventoryManager;
-import net.botwithus.rs3.item.InvItem;
+import net.botwithus.rs3.item.InventoryItem;
 import net.botwithus.ui.workspace.ExtInfo;
 import net.botwithus.ui.workspace.Workspace;
 import net.botwithus.ui.workspace.WorkspaceExtension;
@@ -21,7 +20,7 @@ public class InventoryDebug implements WorkspaceExtension {
 
     private boolean isInventoryDebugVisible = false;
 
-    private InvItem selectedItem;
+    private InventoryItem selectedItem;
 
     @Override
     public void drawExtension(Workspace workspace) {
@@ -36,7 +35,7 @@ public class InventoryDebug implements WorkspaceExtension {
             if (ImGui.beginListBox("", 400, -1)) {
                 for (Inventory inventory : InventoryManager.getInventories()) {
                     if (ImGui.treeNode("Inventory " + inventory.getId() + (inventory.hasDomains() ? " (*)" : ""))) {
-                        for (InvItem item : inventory.getItems()) {
+                        for (InventoryItem item : inventory.getItems()) {
                             if (item.getId() == -1) {
                                 continue;
                             }

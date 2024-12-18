@@ -5,19 +5,19 @@ import net.botwithus.rs3.cache.assets.inventories.InvType;
 import net.botwithus.rs3.cache.assets.vars.VarBitType;
 import net.botwithus.rs3.cache.assets.vars.VarDomainType;
 import net.botwithus.rs3.inventories.internal.MutableInventory;
-import net.botwithus.rs3.item.InvItem;
+import net.botwithus.rs3.item.InventoryItem;
 import net.botwithus.rs3.item.Item;
-import net.botwithus.rs3.item.internal.MutableInvItem;
+import net.botwithus.rs3.item.internal.MutableInventoryItem;
 
 import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public sealed class Inventory implements Iterable<InvItem> permits MutableInventory {
+public sealed class Inventory implements Iterable<InventoryItem> permits MutableInventory {
 
     protected final int id;
     protected final InvType type;
-    protected MutableInvItem[] items;
+    protected MutableInventoryItem[] items;
     protected boolean isActive = false;
     protected Map<Integer, Integer>[] domains;
 
@@ -26,12 +26,12 @@ public sealed class Inventory implements Iterable<InvItem> permits MutableInvent
         this.type = ConfigManager.getInvProvider().provide(id);
         if (this.type != null) {
             this.domains = new HashMap[this.type.getCapacity()];
-            this.items = new MutableInvItem[this.type.getCapacity()];
+            this.items = new MutableInventoryItem[this.type.getCapacity()];
             for (int i = 0; i < this.type.getCapacity(); i++) {
-                this.items[i] = new MutableInvItem(-1, 0, i, this);
+                this.items[i] = new MutableInventoryItem(-1, 0, i, this);
             }
         } else {
-            this.items = new MutableInvItem[0];
+            this.items = new MutableInventoryItem[0];
         }
     }
 
@@ -47,12 +47,12 @@ public sealed class Inventory implements Iterable<InvItem> permits MutableInvent
         return items[slot];
     }
 
-    public List<InvItem> getItems() {
+    public List<InventoryItem> getItems() {
         return Arrays.asList(items);
     }
 
     public boolean isFull() {
-        return Arrays.stream(items).map(InvItem::getId).filter(i -> i != -1).count() == type.getCapacity();
+        return Arrays.stream(items).map(InventoryItem::getId).filter(i -> i != -1).count() == type.getCapacity();
     }
 
     public int freeSlots() {
@@ -64,7 +64,7 @@ public sealed class Inventory implements Iterable<InvItem> permits MutableInvent
     }
 
     public boolean contains(int id, int amount) {
-        return Arrays.stream(items).filter(i -> i.getId() == id).mapToInt(InvItem::getQuantity).sum() >= amount;
+        return Arrays.stream(items).filter(i -> i.getId() == id).mapToInt(InventoryItem::getQuantity).sum() >= amount;
     }
 
     public boolean containsAll(int... ids) {
@@ -84,7 +84,7 @@ public sealed class Inventory implements Iterable<InvItem> permits MutableInvent
     }
 
     public int count(int id) {
-        return Arrays.stream(items).filter(i -> i.getId() == id).mapToInt(InvItem::getQuantity).sum();
+        return Arrays.stream(items).filter(i -> i.getId() == id).mapToInt(InventoryItem::getQuantity).sum();
     }
 
     public int countAll(int... ids) {
@@ -96,7 +96,7 @@ public sealed class Inventory implements Iterable<InvItem> permits MutableInvent
     }
 
     public boolean containsByCategory(int category, int amount) {
-        return Arrays.stream(items).filter(i -> i.getCategory() == category).mapToInt(InvItem::getQuantity).sum() >= amount;
+        return Arrays.stream(items).filter(i -> i.getCategory() == category).mapToInt(InventoryItem::getQuantity).sum() >= amount;
     }
 
     public boolean containsAllByCategory(int... categories) {
@@ -133,7 +133,7 @@ public sealed class Inventory implements Iterable<InvItem> permits MutableInvent
     }
 
     @Override
-    public Iterator<InvItem> iterator() {
+    public Iterator<InventoryItem> iterator() {
         return new Iterator<>() {
 
             private int index = 0;
@@ -144,13 +144,13 @@ public sealed class Inventory implements Iterable<InvItem> permits MutableInvent
             }
 
             @Override
-            public InvItem next() {
+            public InventoryItem next() {
                 return items[index++];
             }
         };
     }
 
-    public Stream<InvItem> stream() {
+    public Stream<InventoryItem> stream() {
         return StreamSupport.stream(this.spliterator(), false);
     }
 }

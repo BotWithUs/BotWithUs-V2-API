@@ -37,7 +37,7 @@ public final class MutableItemStack extends ItemStack {
     }
 
     public void setActive(boolean active) {
-        this.isActive = active;
+        this.isValid = active;
     }
 
     @Override

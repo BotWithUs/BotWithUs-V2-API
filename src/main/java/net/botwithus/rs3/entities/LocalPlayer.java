@@ -73,9 +73,9 @@ public abstract class LocalPlayer extends PathingEntity {
     }
 
     @Override
-    public boolean isActive() {
+    public boolean isValid() {
         var player = getPlayer();
-        return player != null && player.isActive();
+        return player != null && player.isValid();
     }
 
     @Override

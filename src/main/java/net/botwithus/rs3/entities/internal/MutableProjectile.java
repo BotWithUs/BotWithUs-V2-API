@@ -47,7 +47,7 @@ public final class MutableProjectile extends Projectile {
     }
 
     public void setActive(boolean active) {
-        this.isActive = active;
+        this.isValid = active;
     }
 
     @Override

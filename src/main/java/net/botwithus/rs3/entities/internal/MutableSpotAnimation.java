@@ -24,7 +24,7 @@ public final class MutableSpotAnimation extends SpotAnimation {
     }
 
     public void setActive(boolean isActive) {
-        this.isActive = isActive;
+        this.isValid = isActive;
     }
 
     public void setAnimationId(int id) {

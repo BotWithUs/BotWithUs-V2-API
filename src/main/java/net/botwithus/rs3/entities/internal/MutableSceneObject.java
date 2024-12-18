@@ -28,7 +28,7 @@ public final class MutableSceneObject extends SceneObject {
     }
 
     public void setActive(boolean isActive) {
-        this.isActive = isActive;
+        this.isValid = isActive;
     }
 
     public void setHidden(boolean hidden) {

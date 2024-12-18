@@ -3,12 +3,15 @@ package net.botwithus.modules.login;
 import net.botwithus.imgui.ImGui;
 import net.botwithus.modules.BotModule;
 import net.botwithus.modules.BotModuleInfo;
+import net.botwithus.rs3.cache.assets.providers.ScriptProvider;
 import net.botwithus.rs3.client.Client;
 import net.botwithus.rs3.cs2.ScriptDescriptor;
 import net.botwithus.rs3.cs2.ScriptHandle;
 import net.botwithus.rs3.login.LoginManager;
 import net.botwithus.rs3.world.ClientState;
 import net.botwithus.rs3.world.World;
+import net.botwithus.scripts.RepositoryRegistry;
+import net.botwithus.scripts.ScriptRepository;
 import net.botwithus.ui.workspace.Workspace;
 import net.botwithus.util.Timer;
 

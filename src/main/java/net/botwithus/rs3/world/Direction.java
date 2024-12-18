@@ -25,4 +25,15 @@ public record Direction(float dirX, float dirY, float dirZ) {
         // Check if the dot product is positive, indicating the vectors are aligned
         return dotProduct > 0;
     }
+
+    public Rotation getRotation() {
+        // Calculate yaw (rotation around Y-axis)
+        float yaw = (float) Math.toDegrees(Math.atan2(dirZ, dirX)) - 90;
+
+        // Calculate pitch (rotation around X-axis)
+        float pitch = (float) Math.toDegrees(Math.atan2(dirY, Math.sqrt(dirX * dirX + dirZ * dirZ)));
+
+        // Return rotation angles
+        return new Rotation(pitch, yaw);
+    }
 }
