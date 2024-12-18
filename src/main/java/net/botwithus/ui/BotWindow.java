@@ -142,7 +142,7 @@ public final class BotWindow {
 
             for (Script script : scripts) {
                 Info info = script.getClass().getAnnotation(Info.class);
-
+                ImGui.pushGroupId(info.name());
                 ImGui.tableNextRow(0, 0f);
                 ImGui.tableNextColumn();
                 ImGui.text(info.name());
@@ -157,6 +157,7 @@ public final class BotWindow {
                 }
                 ImGui.tableNextColumn();
                 ImGui.text(info.author());
+                ImGui.popGroupId();
             }
 
             ImGui.endTable();
