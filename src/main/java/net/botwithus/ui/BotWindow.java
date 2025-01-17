@@ -92,10 +92,22 @@ public final class BotWindow {
             if (ImGui.begin("Scripts", 0)) {
                 if (ImGui.beginTabBar("scriptrepos", 0)) {
                     if (ImGui.beginTabItem("Local Scripts", 0)) {
-                        drawLocalScripts();
+                        drawScriptRepository(RepositoryRegistry.getLocalRepository());
                         ImGui.endTabItem();
                     } else {
                         ImGui.text("Failed to draw local scripts tab.");
+                    }
+                    for (ScriptRepository repo : RepositoryRegistry.getRepositories()) {
+                        Info info = repo.getClass().getAnnotation(Info.class);
+                        if(info == null) {
+                            continue;
+                        }
+                        if (ImGui.beginTabItem(info.name(), 0)) {
+                            drawScriptRepository(repo);
+                            ImGui.endTabItem();
+                        } else {
+                            ImGui.text("Failed to draw " + info.name() + " tab.");
+                        }
                     }
                     ImGui.endTabBar();
                 } else {
@@ -129,6 +141,37 @@ public final class BotWindow {
                 script.draw(workspace);
             }
         });
+    }
+
+    private static void drawScriptRepository(ScriptRepository repo) {
+        List<Script> scripts = repo.getScripts();
+        if (ImGui.beginTable("scripts_list", 3, ImGuiTable_Nice, 0f, 0f, 0f)) {
+            ImGui.tableSetupColumn("Name", 0, 0f, 0);
+            ImGui.tableSetupColumn("Actions", 0, 0f, 0);
+            ImGui.tableSetupColumn("Author", 0, 0f, 0);
+            ImGui.tableHeadersRow();
+
+            for (Script script : scripts) {
+                Info info = script.getClass().getAnnotation(Info.class);
+                ImGui.pushGroupId(info.name());
+                ImGui.tableNextRow(0, 0f);
+                ImGui.tableNextColumn();
+                ImGui.text(info.name());
+                ImGui.tableNextColumn();
+                script.setActive(ImGui.checkbox("Active", script.isActive()));
+                ImGui.sameLine(0, 0);
+                script.setWindowVisible(ImGui.checkbox("Settings", script.isWindowVisible()));
+                ImGui.sameLine(0, 3);
+                if (ImGui.button("Reload", 50, 20)) {
+                    repo.reload(script);
+                }
+                ImGui.tableNextColumn();
+                ImGui.text(info.author());
+                ImGui.popGroupId();
+            }
+
+            ImGui.endTable();
+        }
     }
 
     private static void drawLocalScripts() {
