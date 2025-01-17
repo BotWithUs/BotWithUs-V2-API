@@ -3,10 +3,14 @@ package net.botwithus.rs3.interfaces;
 import net.botwithus.rs3.cache.assets.ConfigManager;
 import net.botwithus.rs3.cache.assets.params.ParamDefinition;
 import net.botwithus.rs3.interfaces.internal.MutableComponent;
+import net.botwithus.rs3.minimenu.Action;
+import net.botwithus.rs3.minimenu.Interactive;
+import net.botwithus.rs3.minimenu.MiniMenu;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
-public sealed abstract class Component permits MutableComponent {
+public sealed abstract class Component implements Interactive permits MutableComponent {
 
     protected Interface root;
 
@@ -143,6 +147,42 @@ public sealed abstract class Component permits MutableComponent {
         return (int) value;
     }
 
+    @Override
+    public final boolean interact() {
+        return MiniMenu.doAction(action(), 1, subComponentId, root.interfaceId << 16 | componentId);
+    }
+
+    @Override
+    public final boolean interact(int option) {
+        return MiniMenu.doAction(action(), option, subComponentId, root.interfaceId << 16 | componentId);
+    }
+
+    @Override
+    public final boolean interact(String option) {
+        if(options.length == 0) {
+            return false;
+        }
+        for (int i = 0; i < options.length; i++) {
+            if (options[i].equals(option)) {
+                return MiniMenu.doAction(action(), i + 1, subComponentId, root.interfaceId << 16 | componentId);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public final boolean interact(Pattern pattern) {
+        if(options.length == 0) {
+            return false;
+        }
+        for (int i = 0; i < options.length; i++) {
+            if (pattern.matcher(options[i]).matches()) {
+                return MiniMenu.doAction(action(), i + 1, subComponentId, root.interfaceId << 16 | componentId);
+            }
+        }
+        return false;
+    }
+
     public Component getSubComponent(int id) {
         return children.get(id);
     }
@@ -150,5 +190,9 @@ public sealed abstract class Component permits MutableComponent {
     @Override
     public int hashCode() {
         return root.getInterfaceId() << 16 | componentId;
+    }
+
+    private Action action() {
+        return (properties & 0x1) != 0 ? Action.DIALOGUE : Action.COMPONENT;
     }
 }
