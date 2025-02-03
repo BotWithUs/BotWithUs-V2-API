@@ -1,6 +1,6 @@
 # BotWithUs API
 
-Core API package for RuneScape 3 bot development, providing essential interfaces and utilities for game interaction.
+Core API package for BotWIthUs providing essential interfaces and utilities for game interaction.
 
 ## Features
 
