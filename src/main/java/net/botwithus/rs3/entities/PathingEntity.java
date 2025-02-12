@@ -150,7 +150,7 @@ public abstract class PathingEntity extends Entity implements Interactive {
 
     @Override
     public final boolean interact(Pattern pattern) {
-        // return interact(i + 1) ?
+        // Used to be interact(i + 1) but it wasn't consistent with the other ones, so I'm assuming that was a mistake
         return interact(opt -> pattern.matcher(opt).matches());
     }
 
