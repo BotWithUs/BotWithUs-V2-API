@@ -3,20 +3,33 @@ package net.botwithus.rs3.item;
 import net.botwithus.rs3.cache.assets.ConfigManager;
 import net.botwithus.rs3.cache.assets.items.ItemDefinition;
 import net.botwithus.rs3.cache.assets.items.StackType;
+import net.botwithus.rs3.interfaces.Component;
 import net.botwithus.rs3.item.internal.MutableItem;
+import net.botwithus.rs3.minimenu.Interactive;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
-public sealed abstract class Item permits InventoryItem, MutableItem {
+public sealed abstract class Item implements Interactive permits InventoryItem, MutableItem {
 
     private static final Logger log = Logger.getLogger(Item.class.getName());
 
     protected int id;
     protected int quantity;
 
-    public Item(int id, int amount) {
+    private Component component;
+
+    public Item(int id, int amount, Component component) {
         this.id = id;
         this.quantity = amount;
+        this.component = component;
+    }
+
+    public Item(int id, int amount) {
+        this(id, amount, null);
     }
 
     public int getId() {
@@ -62,5 +75,31 @@ public sealed abstract class Item permits InventoryItem, MutableItem {
             return StackType.NEVER;
         }
         return type.getStackability();
+    }
+
+    public Component getComponent() {
+        // Lazy-load to prevent the extra overhead from interfaces by default
+        if (component == null) {
+            // Impl to be determined
+        }
+        return component;
+    }
+
+    @Override
+    public List<String> getOptions() {
+        Component component = getComponent();
+        if (component == null) {
+            return Collections.emptyList();
+        }
+        return component.getOptions();
+    }
+
+    @Override
+    public boolean interact(Predicate<String> predicate) {
+        Component component = getComponent();
+        if (component == null) {
+            throw new UnsupportedOperationException("Interacting with this item is not supported");
+        }
+        return component.interact(predicate);
     }
 }

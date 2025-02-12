@@ -11,6 +11,7 @@ import net.botwithus.rs3.vars.VarDomain;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -79,6 +80,7 @@ public sealed abstract class SceneObject extends Entity implements Interactive p
         return name;
     }
 
+    @Override
     public List<String> getOptions() {
         SceneObjectDefinition type = getMultiType();
         if (type == null) {
@@ -107,29 +109,14 @@ public sealed abstract class SceneObject extends Entity implements Interactive p
     }
 
     @Override
-    public boolean interact(String option) {
+    public boolean interact(Predicate<String> predicate) {
         List<String> options = getOptions();
         for (int i = 0; i < options.size(); i++) {
             String opt = options.get(i);
             if (opt == null) {
                 continue;
             }
-            if (opt.equals(option)) {
-                return interact(i + 1);
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean interact(Pattern pattern) {
-        List<String> options = getOptions();
-        for (int i = 0; i < options.size(); i++) {
-            String option = options.get(i);
-            if (option == null) {
-                continue;
-            }
-            if (pattern.matcher(option).matches()) {
+            if (predicate.test(opt)) {
                 return interact(i + 1);
             }
         }

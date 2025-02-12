@@ -8,6 +8,7 @@ import net.botwithus.rs3.minimenu.Interactive;
 import net.botwithus.rs3.minimenu.MiniMenu;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public sealed abstract class Component implements Interactive permits MutableComponent {
@@ -81,6 +82,7 @@ public sealed abstract class Component implements Interactive permits MutableCom
         return optionBase;
     }
 
+    @Override
     public List<String> getOptions() {
         if(options == null) {
             return Collections.emptyList();
@@ -158,25 +160,12 @@ public sealed abstract class Component implements Interactive permits MutableCom
     }
 
     @Override
-    public final boolean interact(String option) {
+    public final boolean interact(Predicate<String> predicate) {
         if(options.length == 0) {
             return false;
         }
         for (int i = 0; i < options.length; i++) {
-            if (options[i].equals(option)) {
-                return MiniMenu.doAction(action(), i + 1, subComponentId, root.interfaceId << 16 | componentId);
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public final boolean interact(Pattern pattern) {
-        if(options.length == 0) {
-            return false;
-        }
-        for (int i = 0; i < options.length; i++) {
-            if (pattern.matcher(options[i]).matches()) {
+            if (predicate.test(options[i])) {
                 return MiniMenu.doAction(action(), i + 1, subComponentId, root.interfaceId << 16 | componentId);
             }
         }
