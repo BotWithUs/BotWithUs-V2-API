@@ -5,6 +5,7 @@ import net.botwithus.rs3.minimenu.Interactive;
 import net.botwithus.rs3.minimenu.MiniMenu;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -58,10 +59,6 @@ public abstract class PathingEntity extends Entity implements Interactive {
         return isMoving;
     }
 
-    public List<String> getOptions() {
-        return Collections.emptyList();
-    }
-
     public Headbar getHeadbar(int id) {
         return headbars.get(id);
     }
@@ -107,6 +104,11 @@ public abstract class PathingEntity extends Entity implements Interactive {
     }
 
     @Override
+    public final List<String> getOptions() {
+        return Collections.emptyList();
+    }
+
+    @Override
     public final boolean interact() {
         if (type == EntityType.PLAYER_ENTITY) {
             return MiniMenu.doAction(Action.PLAYER1, getIndex(), 0, 0);
@@ -147,33 +149,9 @@ public abstract class PathingEntity extends Entity implements Interactive {
     }
 
     @Override
-    public final boolean interact(String option) {
-        List<String> options = getOptions();
-        for (int i = 0; i < options.size(); i++) {
-            String opt = options.get(i);
-            if (opt == null) {
-                continue;
-            }
-            if (opt.equals(option)) {
-                return interact(i);
-            }
-        }
-        return false;
-    }
-
-    @Override
     public final boolean interact(Pattern pattern) {
-        List<String> options = getOptions();
-        for (int i = 0; i < options.size(); i++) {
-            String opt = options.get(i);
-            if(opt == null) {
-                continue;
-            }
-            if (pattern.matcher(opt).matches()) {
-                return interact(i + 1);
-            }
-        }
-        return false;
+        // return interact(i + 1) ?
+        return interact(opt -> pattern.matcher(opt).matches());
     }
 
     public List<SpotAnimation> getSpotAnimations() {
