@@ -86,9 +86,12 @@ public sealed abstract class Item implements Interactive permits InventoryItem, 
     }
 
     @Override
-    public final List<String> getOptions() {
+    public List<String> getOptions() {
         Component component = getComponent();
-        return component == null ? Collections.emptyList() : component.getOptions();
+        if (component == null) {
+            return Collections.emptyList();
+        }
+        return component.getOptions();
     }
 
     @Override
