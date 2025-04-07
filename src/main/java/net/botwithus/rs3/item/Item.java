@@ -95,6 +95,15 @@ public sealed abstract class Item implements Interactive permits InventoryItem, 
     }
 
     @Override
+    public boolean interact(int option) {
+        Component comp = getComponent();
+        if(comp == null) {
+            throw new UnsupportedOperationException("Interacting with this item is not supported");
+        }
+        return comp.interact(option);
+    }
+
+    @Override
     public boolean interact(Predicate<String> predicate) {
         Component component = getComponent();
         if (component == null) {

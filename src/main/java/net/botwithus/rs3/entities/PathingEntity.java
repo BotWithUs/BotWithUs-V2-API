@@ -104,7 +104,7 @@ public abstract class PathingEntity extends Entity implements Interactive {
     }
 
     @Override
-    public final List<String> getOptions() {
+    public List<String> getOptions() {
         return Collections.emptyList();
     }
 

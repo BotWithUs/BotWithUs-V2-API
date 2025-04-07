@@ -30,6 +30,7 @@ public final class ConfigManager {
     private static MapProvider mapProvider;
 
     public static void initialize(CacheLibrary library) {
+        cacheLibrary = library;
         paramProvider = new ParamProvider(cacheLibrary);
         itemProvider = new ItemProvider(cacheLibrary, paramProvider);
         varBitProvider = new VarBitProvider(cacheLibrary);

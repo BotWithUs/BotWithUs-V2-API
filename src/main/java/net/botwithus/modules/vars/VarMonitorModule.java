@@ -21,7 +21,7 @@ import java.util.Map;
 @BotModuleInfo(name = "Var Monitor", author = "DrJavatar", description = "Monitors RS3 vars", version = "1.0", states = {ClientState.LOBBY, ClientState.GAME})
 public class VarMonitorModule implements BotModule {
 
-    private static VarMonitorModule instance = new VarMonitorModule();
+    private static final VarMonitorModule instance = new VarMonitorModule();
 
     private boolean enabled;
 
@@ -82,7 +82,7 @@ public class VarMonitorModule implements BotModule {
 
             for (int i = 0; i < varCount; i++) {
                 VarType type = ConfigManager.getVarProvider().provide(i);
-                if(type == null) {
+                if (type == null) {
                     continue;
                 }
 
@@ -97,7 +97,6 @@ public class VarMonitorModule implements BotModule {
                 Integer value = varCache.get(i);
                 ImGui.text(value == null ? "0" : String.valueOf(value));
             }
-
             ImGui.endTable();
         }
     }
@@ -113,10 +112,10 @@ public class VarMonitorModule implements BotModule {
 
             for (int i = 0; i < varbitCount; i++) {
                 VarBitType type = ConfigManager.getVarBitProvider().provide(i);
-                if(type == null) {
+                if (type == null) {
                     continue;
                 }
-                if(type.getDomainType() != VarDomainType.PLAYER) {
+                if (type.getDomainType() != VarDomainType.PLAYER) {
                     continue;
                 }
 
@@ -167,7 +166,7 @@ public class VarMonitorModule implements BotModule {
         }
         for (int i = 0; i < varCount; i++) {
             int value = VarDomain.getVarValue(i);
-            if(value == 0) {
+            if (value == 0) {
                 continue;
             }
             Integer oldValue = varCache.get(i);
@@ -178,7 +177,7 @@ public class VarMonitorModule implements BotModule {
         }
         for (int i = 0; i < varbitCount; i++) {
             int value = VarDomain.getVarBitValue(i);
-            if(value == 0) {
+            if (value == 0) {
                 continue;
             }
             Integer oldValue = varbitCache.get(i);
