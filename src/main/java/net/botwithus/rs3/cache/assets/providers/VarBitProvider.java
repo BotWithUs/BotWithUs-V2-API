@@ -1,9 +1,6 @@
 package net.botwithus.rs3.cache.assets.providers;
 
-import net.botwithus.rs3.cache.Archive;
-import net.botwithus.rs3.cache.ArchiveFile;
-import net.botwithus.rs3.cache.Filesystem;
-import net.botwithus.rs3.cache.ReferenceTable;
+import net.botwithus.rs3.cache.*;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.vars.VarBitLoader;
 import net.botwithus.rs3.cache.assets.vars.VarBitType;
@@ -20,12 +17,12 @@ public final class VarBitProvider implements ConfigProvider<VarBitType> {
 
     private final Map<Integer, VarBitType> varbits;
 
-    private final Filesystem fs;
+    private final CacheLibrary library;
 
     private final VarBitLoader loader;
 
-    public VarBitProvider(Filesystem fs) {
-        this.fs = fs;
+    public VarBitProvider(CacheLibrary library) {
+        this.library = library;
         this.loader = new VarBitLoader();
         this.varbits = new HashMap<>();
     }
@@ -41,20 +38,13 @@ public final class VarBitProvider implements ConfigProvider<VarBitType> {
             return varbits.get(id);
         }
         try {
-            ReferenceTable table = fs.getReferenceTable(2, false);
-            if (table == null) {
-                return null;
-            }
-            Archive archive = table.loadArchive(69);
-            if (archive == null) {
-                return null;
-            }
-            ArchiveFile file = archive.files.get(id);
-            if (file == null) {
+            ByteBuffer buffer = library.getFile(2, 69, id);
+            if (buffer == null) {
+                log.log(Level.WARNING, "Failed to load varbit type: " + id);
                 return null;
             }
             VarBitType varbit = new VarBitType(id);
-            loader.load(varbit, ByteBuffer.wrap(file.getData()));
+            loader.load(varbit, buffer);
             varbits.put(id, varbit);
             return varbit;
         } catch (Exception e) {
@@ -65,18 +55,6 @@ public final class VarBitProvider implements ConfigProvider<VarBitType> {
 
     @Override
     public int capacity() {
-        try {
-            ReferenceTable table = fs.getReferenceTable(2, false);
-            if (table == null) {
-                return 0;
-            }
-            Archive archive = table.loadArchive(69);
-            if (archive == null) {
-                return 0;
-            }
-            return archive.files.size();
-        } catch (Exception e) {
-            return 0;
-        }
+        return (int) library.getFileCount(2, 69, 0);
     }
 }

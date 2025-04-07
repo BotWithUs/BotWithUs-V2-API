@@ -1,9 +1,6 @@
 package net.botwithus.rs3.cache.assets.providers;
 
-import net.botwithus.rs3.cache.Archive;
-import net.botwithus.rs3.cache.ArchiveFile;
-import net.botwithus.rs3.cache.Filesystem;
-import net.botwithus.rs3.cache.ReferenceTable;
+import net.botwithus.rs3.cache.*;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.so.SceneObjectLoader;
 import net.botwithus.rs3.cache.assets.so.SceneObjectDefinition;
@@ -18,13 +15,13 @@ public final class SceneObjectProvider implements ConfigProvider<SceneObjectDefi
 
     private static final Logger log = Logger.getLogger(SceneObjectProvider.class.getName());
 
-    private final Filesystem fs;
+    private final CacheLibrary library;
     private final SceneObjectLoader loader;
 
     private final Map<Integer, SceneObjectDefinition> cache;
 
-    public SceneObjectProvider(Filesystem fs) {
-        this.fs = fs;
+    public SceneObjectProvider(CacheLibrary library) {
+        this.library = library;
         this.loader = new SceneObjectLoader();
         this.cache = new HashMap<>();
     }
@@ -37,22 +34,15 @@ public final class SceneObjectProvider implements ConfigProvider<SceneObjectDefi
     @Override
     public SceneObjectDefinition provide(int id) {
         try {
-            ReferenceTable table = fs.getReferenceTable(16, false);
-            if (table == null) {
-                return null;
-            }
             int archiveId = id >> 8;
             int fileId = id & ((1 << 8) - 1);
-            Archive archive = table.loadArchive(archiveId);
-            if (archive == null) {
-                return null;
-            }
-            ArchiveFile file = archive.files.get(fileId);
-            if (file == null) {
+            ByteBuffer buffer = library.getFile(16, archiveId, fileId);
+            if (buffer == null) {
+                log.log(Level.WARNING, "Failed to load loc type: " + id);
                 return null;
             }
             SceneObjectDefinition type = new SceneObjectDefinition(id);
-            loader.load(type, ByteBuffer.wrap(file.getData()));
+            loader.load(type, buffer);
             cache.put(id, type);
             return type;
         } catch (Exception e) {

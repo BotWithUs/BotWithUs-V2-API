@@ -1,9 +1,6 @@
 package net.botwithus.rs3.cache.assets.providers;
 
-import net.botwithus.rs3.cache.Archive;
-import net.botwithus.rs3.cache.ArchiveFile;
-import net.botwithus.rs3.cache.Filesystem;
-import net.botwithus.rs3.cache.ReferenceTable;
+import net.botwithus.rs3.cache.*;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.maps.TileLoader;
 import net.botwithus.rs3.cache.assets.maps.SceneObjectSpawnLoader;
@@ -22,14 +19,14 @@ public final class MapProvider implements ConfigProvider<RegionDefinition> {
     private static final int LOC_FILE = 0;
     private static final int TILES_FILE = 3;
 
-    private final Filesystem fs;
+    private final CacheLibrary library;
     private final Map<Integer, RegionDefinition> cache;
 
     private final SceneObjectSpawnLoader spawnLoader;
     private final TileLoader tileLoader;;
 
-    public MapProvider(Filesystem fs) {
-        this.fs = fs;
+    public MapProvider(CacheLibrary library) {
+        this.library = library;
         this.cache = new HashMap<>();
         this.spawnLoader = new SceneObjectSpawnLoader();
         this.tileLoader = new TileLoader();
@@ -46,21 +43,17 @@ public final class MapProvider implements ConfigProvider<RegionDefinition> {
             return cache.get(id);
         }
         try {
-            ReferenceTable table = fs.getReferenceTable(5, false);
-            if (table == null) {
-                return null;
-            }
             int regionX = id >> 8 & 0xFF;
             int regionY = id & 0xFF;
-            Archive archive = table.loadArchive(regionX | (regionY << 7));
-            ArchiveFile locFile = archive.files.get(LOC_FILE);
-            ArchiveFile tilesFile = archive.files.get(TILES_FILE);
+            int archiveId = regionX | (regionY << 7);
+            ByteBuffer locFile = library.getFile(5, archiveId, LOC_FILE);
+            ByteBuffer tilesFile = library.getFile(5, archiveId, TILES_FILE);
             RegionDefinition type = new RegionDefinition(id);
             if (locFile != null) {
-                spawnLoader.load(type, ByteBuffer.wrap(locFile.getData()));
+                spawnLoader.load(type, locFile);
             }
             if (tilesFile != null) {
-                tileLoader.load(type, ByteBuffer.wrap(tilesFile.getData()));
+                tileLoader.load(type, tilesFile);
             }
             cache.put(id, type);
             return type;

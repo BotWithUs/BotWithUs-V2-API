@@ -76,7 +76,9 @@ public final class InterfaceDebug implements WorkspaceExtension {
     }
 
     private void drawSelectedComponent() {
-        if (selected != null) {
+        if (selected == null) {
+            ImGui.text("No component selected");
+        } else {
             if (ImGui.beginTable("##selected_comp_table", 2, ImFlags.ImGuiTable_Nice_Borders, 0, 0, 0)) {
                 ImGui.tableSetupColumn("Field", 0, 0, 0);
                 ImGui.tableSetupColumn("Value", 0, 0, 0);
@@ -119,23 +121,19 @@ public final class InterfaceDebug implements WorkspaceExtension {
             ImGui.separatorText("Component Params");
             if (selected.getParams().isEmpty()) {
                 ImGui.text("No params");
-            } else {
-                if (ImGui.beginTable("##selected_comp_params_table", 2, ImFlags.ImGuiTable_Nice_Borders, 0, 0, 0)) {
-                    ImGui.tableSetupColumn("Type", 0, 0, 0);
-                    ImGui.tableSetupColumn("Value", 0, 0, 0);
-                    ImGui.tableHeadersRow();
-                    for (int param : selected.getParams().keySet()) {
-                        ParamDefinition type = ConfigManager.getParamProvider().provide(param);
-                        if (type == null) {
-                            continue;
-                        }
-                        interfaceRow(type.getVarType().name() + " (" + param + ")", selected.getParams().get(param));
+            } else if (ImGui.beginTable("##selected_comp_params_table", 2, ImFlags.ImGuiTable_Nice_Borders, 0, 0, 0)) {
+                ImGui.tableSetupColumn("Type", 0, 0, 0);
+                ImGui.tableSetupColumn("Value", 0, 0, 0);
+                ImGui.tableHeadersRow();
+                for (int param : selected.getParams().keySet()) {
+                    ParamDefinition type = ConfigManager.getParamProvider().provide(param);
+                    if (type == null) {
+                        continue;
                     }
-                    ImGui.endTable();
+                    interfaceRow(type.getVarType().name() + " (" + param + ")", selected.getParams().get(param));
                 }
+                ImGui.endTable();
             }
-        } else {
-            ImGui.text("No component selected");
         }
     }
 

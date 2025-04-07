@@ -1,9 +1,6 @@
 package net.botwithus.rs3.cache.assets.providers;
 
-import net.botwithus.rs3.cache.Archive;
-import net.botwithus.rs3.cache.ArchiveFile;
-import net.botwithus.rs3.cache.Filesystem;
-import net.botwithus.rs3.cache.ReferenceTable;
+import net.botwithus.rs3.cache.*;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.params.ParamLoader;
 import net.botwithus.rs3.cache.assets.params.ParamDefinition;
@@ -17,14 +14,14 @@ import java.util.logging.Logger;
 public final class ParamProvider implements ConfigProvider<ParamDefinition> {
 
     private static final Logger log = Logger.getLogger(ItemProvider.class.getName());
-    private final Filesystem fs;
+    private final CacheLibrary library;
 
     private final ParamLoader loader;
 
     private final Map<Integer, ParamDefinition> params;
 
-    public ParamProvider(Filesystem fs) {
-        this.fs = fs;
+    public ParamProvider(CacheLibrary library) {
+        this.library = library;
         this.params = new HashMap<>();
         this.loader = new ParamLoader();
     }
@@ -40,20 +37,13 @@ public final class ParamProvider implements ConfigProvider<ParamDefinition> {
             return params.get(id);
         }
         try {
-            ReferenceTable table = fs.getReferenceTable(2, false);
-            if (table == null) {
-                return null;
-            }
-            Archive archive = table.loadArchive(11);
-            if (archive == null) {
-                return null;
-            }
-            ArchiveFile file = archive.files.get(id);
-            if (file == null) {
+            ByteBuffer buffer = library.getFile(2, 11, id);
+            if (buffer == null) {
+                log.log(Level.WARNING, "Failed to load param type: " + id);
                 return null;
             }
             ParamDefinition param = new ParamDefinition(id);
-            loader.load(param, ByteBuffer.wrap(file.getData()));
+            loader.load(param, buffer);
             params.put(id, param);
             return param;
         } catch (Exception e) {

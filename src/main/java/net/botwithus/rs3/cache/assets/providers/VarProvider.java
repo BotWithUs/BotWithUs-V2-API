@@ -1,9 +1,6 @@
 package net.botwithus.rs3.cache.assets.providers;
 
-import net.botwithus.rs3.cache.Archive;
-import net.botwithus.rs3.cache.ArchiveFile;
-import net.botwithus.rs3.cache.Filesystem;
-import net.botwithus.rs3.cache.ReferenceTable;
+import net.botwithus.rs3.cache.*;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.vars.VarLoader;
 import net.botwithus.rs3.cache.assets.vars.VarType;
@@ -19,12 +16,12 @@ public class VarProvider implements ConfigProvider<VarType> {
 
     private final Map<Integer, VarType> vars;
 
-    private final Filesystem fs;
+    private final CacheLibrary library;
 
     private final VarLoader loader;
 
-    public VarProvider(Filesystem fs) {
-        this.fs = fs;
+    public VarProvider(CacheLibrary library) {
+        this.library = library;
         this.loader = new VarLoader();
         this.vars = new HashMap<>();
     }
@@ -40,20 +37,13 @@ public class VarProvider implements ConfigProvider<VarType> {
             if (vars.containsKey(id)) {
                 return vars.get(id);
             }
-            ReferenceTable table = fs.getReferenceTable(2, false);
-            if (table == null) {
-                return null;
-            }
-            Archive archive = table.loadArchive(60);
-            if (archive == null) {
-                return null;
-            }
-            ArchiveFile file = archive.files.get(id);
-            if (file == null) {
+            ByteBuffer buffer = library.getFile(2, 60, id);
+            if (buffer == null) {
+                log.warning("Failed to load var type: " + id);
                 return null;
             }
             VarType var = new VarType(id);
-            loader.load(var, ByteBuffer.wrap(file.getData()));
+            loader.load(var, buffer);
             vars.put(id, var);
             return var;
         } catch (Exception e) {
@@ -64,19 +54,6 @@ public class VarProvider implements ConfigProvider<VarType> {
 
     @Override
     public int capacity() {
-        try {
-            ReferenceTable table = fs.getReferenceTable(2, false);
-            if (table == null) {
-                return 0;
-            }
-            Archive archive = table.loadArchive(60);
-            if (archive == null) {
-                return 0;
-            }
-            return archive.files.size();
-        } catch (Exception e) {
-            log.throwing(VarProvider.class.getName(), "capacity", e);
-            return 0;
-        }
+        return (int) library.getFileCount(2, 60, 0);
     }
 }

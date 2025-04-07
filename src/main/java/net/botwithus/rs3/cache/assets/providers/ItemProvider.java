@@ -1,9 +1,6 @@
 package net.botwithus.rs3.cache.assets.providers;
 
-import net.botwithus.rs3.cache.Archive;
-import net.botwithus.rs3.cache.ArchiveFile;
-import net.botwithus.rs3.cache.Filesystem;
-import net.botwithus.rs3.cache.ReferenceTable;
+import net.botwithus.rs3.cache.*;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.items.ItemLoader;
 import net.botwithus.rs3.cache.assets.items.ItemDefinition;
@@ -18,15 +15,15 @@ public final class ItemProvider implements ConfigProvider<ItemDefinition> {
     private static final Logger log = Logger.getLogger(ItemProvider.class.getName());
 
     private final ItemLoader loader;
-    private final Filesystem fs;
+    private final CacheLibrary library;
 
     private final Map<Integer, ItemDefinition> items;
 
     private final ParamProvider paramProvider;
 
-    public ItemProvider(Filesystem fs, ParamProvider paramProvider) {
+    public ItemProvider(CacheLibrary library, ParamProvider paramProvider) {
         this.loader = new ItemLoader();
-        this.fs = fs;
+        this.library = library;
         this.items = new HashMap<>();
         this.paramProvider = paramProvider;
     }
@@ -42,22 +39,15 @@ public final class ItemProvider implements ConfigProvider<ItemDefinition> {
             return items.get(id);
         }
         try {
-            ReferenceTable table = fs.getReferenceTable(19, false);
-            if (table == null) {
-                return null;
-            }
             int archiveId = id >> 8;
             int fileId = id & ((1 << 8) - 1);
-            Archive archive = table.loadArchive(archiveId);
-            if (archive == null) {
-                return null;
-            }
-            ArchiveFile file = archive.files.get(fileId);
+            ByteBuffer file = library.getFile(19, archiveId, fileId);
             if (file == null) {
+                log.log(Level.WARNING, "Failed to load reference table 19: " + id);
                 return null;
             }
             ItemDefinition item = new ItemDefinition(id);
-            loader.load(item, ByteBuffer.wrap(file.getData()));
+            loader.load(item, file);
 
             if(item.getNotedTemplate() != -1) {
                 item.toNote(provide(item.getNotedItemId()));

@@ -1,9 +1,6 @@
 package net.botwithus.rs3.cache.assets.providers;
 
-import net.botwithus.rs3.cache.Archive;
-import net.botwithus.rs3.cache.ArchiveFile;
-import net.botwithus.rs3.cache.Filesystem;
-import net.botwithus.rs3.cache.ReferenceTable;
+import net.botwithus.rs3.cache.*;
 import net.botwithus.rs3.cache.assets.ConfigProvider;
 import net.botwithus.rs3.cache.assets.inventories.InvLoader;
 import net.botwithus.rs3.cache.assets.inventories.InventoryDefinition;
@@ -18,13 +15,13 @@ public final class InvProvider implements ConfigProvider<InventoryDefinition> {
 
     private static final Logger log = Logger.getLogger(InvProvider.class.getName());
 
-    private final Filesystem fs;
+    private final CacheLibrary library;
     private final InvLoader loader;
 
     private final Map<Integer, InventoryDefinition> cache;
 
-    public InvProvider(Filesystem fs) {
-        this.fs = fs;
+    public InvProvider(CacheLibrary library) {
+        this.library = library;
         this.loader = new InvLoader();
         this.cache = new HashMap<>();
     }
@@ -40,20 +37,13 @@ public final class InvProvider implements ConfigProvider<InventoryDefinition> {
             return cache.get(id);
         }
         try {
-            ReferenceTable table = fs.getReferenceTable(2, false);
-            if (table == null) {
-                return null;
-            }
-            Archive archive = table.loadArchive(5);
-            if (archive == null) {
-                return null;
-            }
-            ArchiveFile file = archive.files.get(id);
-            if (file == null) {
+            ByteBuffer buffer = library.getFile(2, 5, id);
+            if (buffer == null) {
+                log.log(Level.WARNING, "Failed to load inv type: " + id);
                 return null;
             }
             InventoryDefinition type = new InventoryDefinition(id);
-            loader.load(type, ByteBuffer.wrap(file.getData()));
+            loader.load(type, buffer);
             cache.put(id, type);
             return type;
         } catch (Exception e) {
