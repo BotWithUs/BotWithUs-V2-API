@@ -36,7 +36,7 @@ Add the BotWithUs repository to your `build.gradle.kts`:
 ```kotlin
 repositories {
     maven {
-        url = uri("https://nexus.botwithus.net/repository/maven-public/")
+        url = uri("https://botwithus.github.io/maven")
     }
 }
 
